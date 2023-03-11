@@ -15,8 +15,6 @@ namespace CadastroPessoa.API.Domain.Models
 		public string Bairro { get; set; }
 		public string Cidade { get; set; }
 		public string Complemento { get; set; }
-
-		public int PessoaId { get; set; }
 		public Pessoa Pessoa { get; set; }
 	}
 }

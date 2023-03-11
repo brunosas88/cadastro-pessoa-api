@@ -24,5 +24,6 @@ namespace CadastroPessoa.API.Domain.Models
 		public DateTime CriadoEm { get; set; }
 		public DateTime AtualizadoEm { get; set; }
 		public Endereco Endereco { get; set; }
+		public int EnderecoId { get; set; }
 	}
 }
