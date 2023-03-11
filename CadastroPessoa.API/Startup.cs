@@ -1,4 +1,5 @@
 using CadastroPessoa.API.Data;
+using CadastroPessoa.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,16 @@ namespace CadastroPessoa.API
 		{
 			services.AddDbContext<DataContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 			services.AddScoped<DataContext, DataContext>();
+			services.AddScoped<PessoaService, PessoaService>();
+			services.AddScoped<EnderecoService, EnderecoService>();
 			services.AddControllers();
+			services.AddSwaggerGen(options =>
+			{
+				options.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo
+				{
+					Title = "Cadastro de Pessoas API"
+				});
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +57,8 @@ namespace CadastroPessoa.API
 			{
 				endpoints.MapControllers();
 			});
+			app.UseSwagger();
+			app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v2/swagger.json", "PlaceInfo Services"));
 		}
 	}
 }
