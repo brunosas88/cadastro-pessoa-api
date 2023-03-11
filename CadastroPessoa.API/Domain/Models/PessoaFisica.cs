@@ -8,6 +8,6 @@ namespace CadastroPessoa.API.Domain.Models
 	{
 		[Required(ErrorMessage = "Campo Obrigatório")]
 		[StringLength(11)]
-		public int Cpf { get; set; }
+		public string Cpf { get; set; }
 	}
 }
