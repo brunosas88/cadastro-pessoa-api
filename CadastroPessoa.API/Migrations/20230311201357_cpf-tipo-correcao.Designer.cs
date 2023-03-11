@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CadastroPessoa.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230311183836_create-database")]
-    partial class createdatabase
+    [Migration("20230311201357_cpf-tipo-correcao")]
+    partial class cpftipocorrecao
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,13 +48,7 @@ namespace CadastroPessoa.API.Migrations
                     b.Property<string>("Numero")
                         .HasColumnType("text");
 
-                    b.Property<int>("PessoaId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PessoaId")
-                        .IsUnique();
 
                     b.ToTable("Enderecos");
                 });
@@ -76,6 +70,9 @@ namespace CadastroPessoa.API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("EnderecoId")
+                        .HasColumnType("integer");
+
                     b.Property<bool>("EstaAtivo")
                         .HasColumnType("boolean");
 
@@ -90,6 +87,9 @@ namespace CadastroPessoa.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EnderecoId")
+                        .IsUnique();
+
                     b.ToTable("Pessoas");
                 });
 
@@ -97,9 +97,10 @@ namespace CadastroPessoa.API.Migrations
                 {
                     b.HasBaseType("CadastroPessoa.API.Domain.Models.Pessoa");
 
-                    b.Property<int>("Cpf")
+                    b.Property<string>("Cpf")
+                        .IsRequired()
                         .HasMaxLength(11)
-                        .HasColumnType("integer");
+                        .HasColumnType("character varying(11)");
 
                     b.ToTable("PessoasFisicas");
                 });
@@ -116,15 +117,15 @@ namespace CadastroPessoa.API.Migrations
                     b.ToTable("PessoasJuridicas");
                 });
 
-            modelBuilder.Entity("CadastroPessoa.API.Domain.Models.Endereco", b =>
+            modelBuilder.Entity("CadastroPessoa.API.Domain.Models.Pessoa", b =>
                 {
-                    b.HasOne("CadastroPessoa.API.Domain.Models.Pessoa", "Pessoa")
-                        .WithOne("Endereco")
-                        .HasForeignKey("CadastroPessoa.API.Domain.Models.Endereco", "PessoaId")
+                    b.HasOne("CadastroPessoa.API.Domain.Models.Endereco", "Endereco")
+                        .WithOne("Pessoa")
+                        .HasForeignKey("CadastroPessoa.API.Domain.Models.Pessoa", "EnderecoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Pessoa");
+                    b.Navigation("Endereco");
                 });
 
             modelBuilder.Entity("CadastroPessoa.API.Domain.Models.PessoaFisica", b =>
@@ -145,9 +146,9 @@ namespace CadastroPessoa.API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CadastroPessoa.API.Domain.Models.Pessoa", b =>
+            modelBuilder.Entity("CadastroPessoa.API.Domain.Models.Endereco", b =>
                 {
-                    b.Navigation("Endereco");
+                    b.Navigation("Pessoa");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,24 +9,6 @@ namespace CadastroPessoa.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Pessoas",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Nome = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    Telefone = table.Column<string>(type: "text", nullable: false),
-                    EstaAtivo = table.Column<bool>(type: "boolean", nullable: false),
-                    CriadoEm = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    AtualizadoEm = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Pessoas", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Enderecos",
                 columns: table => new
                 {
@@ -37,16 +19,34 @@ namespace CadastroPessoa.API.Migrations
                     Logradouro = table.Column<string>(type: "text", nullable: true),
                     Bairro = table.Column<string>(type: "text", nullable: true),
                     Cidade = table.Column<string>(type: "text", nullable: true),
-                    Complemento = table.Column<string>(type: "text", nullable: true),
-                    PessoaId = table.Column<int>(type: "integer", nullable: false)
+                    Complemento = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Enderecos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Pessoas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Nome = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Telefone = table.Column<string>(type: "text", nullable: false),
+                    EstaAtivo = table.Column<bool>(type: "boolean", nullable: false),
+                    CriadoEm = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    AtualizadoEm = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    EnderecoId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pessoas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Enderecos_Pessoas_PessoaId",
-                        column: x => x.PessoaId,
-                        principalTable: "Pessoas",
+                        name: "FK_Pessoas_Enderecos_EnderecoId",
+                        column: x => x.EnderecoId,
+                        principalTable: "Enderecos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -90,17 +90,14 @@ namespace CadastroPessoa.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Enderecos_PessoaId",
-                table: "Enderecos",
-                column: "PessoaId",
+                name: "IX_Pessoas_EnderecoId",
+                table: "Pessoas",
+                column: "EnderecoId",
                 unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Enderecos");
-
             migrationBuilder.DropTable(
                 name: "PessoasFisicas");
 
@@ -109,6 +106,9 @@ namespace CadastroPessoa.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Pessoas");
+
+            migrationBuilder.DropTable(
+                name: "Enderecos");
         }
     }
 }

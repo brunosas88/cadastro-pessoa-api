@@ -3,15 +3,17 @@ using System;
 using CadastroPessoa.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CadastroPessoa.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230311191218_create-database")]
+    partial class createdatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,10 +97,9 @@ namespace CadastroPessoa.API.Migrations
                 {
                     b.HasBaseType("CadastroPessoa.API.Domain.Models.Pessoa");
 
-                    b.Property<string>("Cpf")
-                        .IsRequired()
+                    b.Property<int>("Cpf")
                         .HasMaxLength(11)
-                        .HasColumnType("character varying(11)");
+                        .HasColumnType("integer");
 
                     b.ToTable("PessoasFisicas");
                 });
