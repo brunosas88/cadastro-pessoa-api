@@ -27,6 +27,7 @@ namespace CadastroPessoa.API.Services
 			novoEndereco.Logradouro = dto.Logradouro;
 			novoEndereco.Bairro = dto.Bairro;
 			novoEndereco.Cidade = dto.Cidade;
+			novoEndereco.Uf = dto.Uf;
 			novoEndereco.Complemento = dto.Complemento;
 
 			return novoEndereco;
