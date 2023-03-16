@@ -39,7 +39,7 @@ namespace CadastroPessoa.API.Services
 		{
 			Endereco enderecoSalvo = await _enderecoService.CriarEnderecoAsync(requisicao.Endereco);
 
-			if (requisicao.IdentificadorSocial.Length == 14)
+			if (requisicao.RegistroSocial.Length == 14)
 			{
 				PessoaJuridica novaPessoa = new PessoaJuridica();
 				novaPessoa.Nome = requisicao.Nome;
@@ -50,7 +50,7 @@ namespace CadastroPessoa.API.Services
 				novaPessoa.AtualizadoEm = DateTime.Now;
 				novaPessoa.Endereco = enderecoSalvo;
 				novaPessoa.EnderecoId = enderecoSalvo.Id;
-				novaPessoa.Cnpj = requisicao.IdentificadorSocial;
+				novaPessoa.Cnpj = requisicao.RegistroSocial;
 				return novaPessoa;
 			}
 			else
@@ -64,7 +64,7 @@ namespace CadastroPessoa.API.Services
 				novaPessoa.AtualizadoEm = DateTime.Now;
 				novaPessoa.Endereco = enderecoSalvo;
 				novaPessoa.EnderecoId = enderecoSalvo.Id;
-				novaPessoa.Cpf = requisicao.IdentificadorSocial;
+				novaPessoa.Cpf = requisicao.RegistroSocial;
 				return novaPessoa;
 			}
 		}
