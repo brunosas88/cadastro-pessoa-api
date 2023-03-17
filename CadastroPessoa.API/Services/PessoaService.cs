@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace CadastroPessoa.API.Services
 {
@@ -37,13 +38,22 @@ namespace CadastroPessoa.API.Services
 			return requisicao;
 		}
 
+		public async Task<List<PessoaRequisicao>> ListarPessoasAsync()
+		{
+			List<PessoaRequisicao> listaPessoas = new List<PessoaRequisicao>();
+			var dadosPessoas = await _context.Pessoas.Include(campo => campo.Endereco).ToListAsync();
+
+			return dadosPessoas.Select(ConverterModeloParaDTO).ToList();
+		}
+
+
 		private async Task<Pessoa> ConverterDTOParaModelo (PessoaRequisicao requisicao)
 		{
 
 			if (requisicao.RegistroSocial.Length == 14)
 			{
 				PessoaJuridica novaPessoa = new PessoaJuridica();
-				novaPessoa = (PessoaJuridica)await CriarPessoa(requisicao, novaPessoa);				
+				novaPessoa = (PessoaJuridica) await CriarPessoa(requisicao, novaPessoa);				
 				novaPessoa.Cnpj = requisicao.RegistroSocial;		
 				return novaPessoa;
 			}
@@ -55,6 +65,24 @@ namespace CadastroPessoa.API.Services
 				return novaPessoa;
 			}
 		}
+
+		private PessoaRequisicao ConverterModeloParaDTO(Pessoa modelo)
+		{
+			PessoaRequisicao dtoPessoa = new PessoaRequisicao();
+			dtoPessoa.Nome = modelo.Nome;
+			dtoPessoa.Email = modelo.Email;
+			dtoPessoa.Telefone = modelo.Telefone;
+			dtoPessoa.Endereco = _enderecoService.ConverterModeloParaDTO(modelo.Endereco);
+
+			if (modelo is PessoaFisica modeloPessoaFisica)			
+				dtoPessoa.RegistroSocial = modeloPessoaFisica.Cpf;			
+			else if (modelo is PessoaJuridica modeloPessoaJuridica)
+				dtoPessoa.RegistroSocial = modeloPessoaJuridica.Cnpj;
+
+            return dtoPessoa;
+		}
+
+
 
 		private async Task<Pessoa> CriarPessoa(PessoaRequisicao requisicao, Pessoa novaPessoa)
 		{
