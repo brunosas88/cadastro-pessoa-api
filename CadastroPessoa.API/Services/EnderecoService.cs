@@ -21,16 +21,30 @@ namespace CadastroPessoa.API.Services
 
 		private Endereco ConverterDTOParaModelo(EnderecoDTO dto)
 		{
-			Endereco novoEndereco = new Endereco();
-			novoEndereco.Cep = dto.Cep;
-			novoEndereco.Numero = dto.Numero;
-			novoEndereco.Logradouro = dto.Logradouro;
-			novoEndereco.Bairro = dto.Bairro;
-			novoEndereco.Cidade = dto.Cidade;
-			novoEndereco.Uf = dto.Uf;
-			novoEndereco.Complemento = dto.Complemento;
+			Endereco modeloEndereco = new Endereco();
+			modeloEndereco.Cep = dto.Cep;
+			modeloEndereco.Numero = dto.Numero;
+			modeloEndereco.Logradouro = dto.Logradouro;
+			modeloEndereco.Bairro = dto.Bairro;
+			modeloEndereco.Cidade = dto.Cidade;
+			modeloEndereco.Uf = dto.Uf;
+			modeloEndereco.Complemento = dto.Complemento;
 
-			return novoEndereco;
+			return modeloEndereco;
+		}
+
+		public EnderecoDTO ConverterModeloParaDTO(Endereco modelo)
+		{
+			EnderecoDTO dtoEndereco = new EnderecoDTO();
+			dtoEndereco.Cep = modelo.Cep;
+			dtoEndereco.Numero = modelo.Numero;
+			dtoEndereco.Logradouro = modelo.Logradouro;
+			dtoEndereco.Bairro = modelo.Bairro;
+			dtoEndereco.Cidade = modelo.Cidade;
+			dtoEndereco.Uf = modelo.Uf;
+			dtoEndereco.Complemento = modelo.Complemento;
+
+			return dtoEndereco;
 		}
 	}
 }
