@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace CadastroPessoa.API.Services
 {
@@ -37,38 +39,36 @@ namespace CadastroPessoa.API.Services
 
 		private async Task<Pessoa> ConverterDTOParaModelo (PessoaRequisicao requisicao)
 		{
-			Endereco enderecoSalvo = await _enderecoService.CriarEnderecoAsync(requisicao.Endereco);
 
 			if (requisicao.RegistroSocial.Length == 14)
 			{
 				PessoaJuridica novaPessoa = new PessoaJuridica();
-				novaPessoa.Nome = requisicao.Nome;
-				novaPessoa.Email = requisicao.Email;
-				novaPessoa.Telefone = requisicao.Telefone;
-				novaPessoa.EstaAtivo = true;
-				novaPessoa.CriadoEm = DateTime.Now;
-				novaPessoa.AtualizadoEm = DateTime.Now;
-				novaPessoa.Endereco = enderecoSalvo;
-				novaPessoa.EnderecoId = enderecoSalvo.Id;
-				novaPessoa.Cnpj = requisicao.RegistroSocial;
+				novaPessoa = (PessoaJuridica)await CriarPessoa(requisicao, novaPessoa);				
+				novaPessoa.Cnpj = requisicao.RegistroSocial;		
 				return novaPessoa;
 			}
 			else
 			{
 				PessoaFisica novaPessoa = new PessoaFisica();
-				novaPessoa.Nome = requisicao.Nome;
-				novaPessoa.Email = requisicao.Email;
-				novaPessoa.Telefone = requisicao.Telefone;
-				novaPessoa.EstaAtivo = true;
-				novaPessoa.CriadoEm = DateTime.Now;
-				novaPessoa.AtualizadoEm = DateTime.Now;
-				novaPessoa.Endereco = enderecoSalvo;
-				novaPessoa.EnderecoId = enderecoSalvo.Id;
+				novaPessoa = (PessoaFisica) await CriarPessoa(requisicao, novaPessoa);
 				novaPessoa.Cpf = requisicao.RegistroSocial;
 				return novaPessoa;
 			}
 		}
 
+		private async Task<Pessoa> CriarPessoa(PessoaRequisicao requisicao, Pessoa novaPessoa)
+		{
+			Endereco enderecoSalvo = await _enderecoService.CriarEnderecoAsync(requisicao.Endereco);
+			novaPessoa.Nome = requisicao.Nome;
+			novaPessoa.Email = requisicao.Email;
+			novaPessoa.Telefone = requisicao.Telefone;
+			novaPessoa.EstaAtivo = true;
+			novaPessoa.CriadoEm = DateTime.Now;
+			novaPessoa.AtualizadoEm = DateTime.Now;
+			novaPessoa.Endereco = enderecoSalvo;
+			novaPessoa.EnderecoId = enderecoSalvo.Id;
+			return novaPessoa;
+		}
 
 
 	}
