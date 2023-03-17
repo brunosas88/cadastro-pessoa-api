@@ -2,6 +2,7 @@
 using CadastroPessoa.API.Domain.DTO;
 using CadastroPessoa.API.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CadastroPessoa.API.Controllers
@@ -22,6 +23,13 @@ namespace CadastroPessoa.API.Controllers
 		public async Task<ActionResult<PessoaRequisicao>> Post([FromBody] PessoaRequisicao requisicao)
 		{
 			return await _pessoaService.SalvarPessoaAsync(requisicao);
+		}
+
+		[HttpGet]
+		[Route("")]
+		public async Task<List<PessoaRequisicao>> ListarPessoas()
+		{
+			return await _pessoaService.ListarPessoasAsync();
 		}
 	}
 }
