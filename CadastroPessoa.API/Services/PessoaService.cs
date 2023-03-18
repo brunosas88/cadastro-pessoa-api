@@ -36,6 +36,19 @@ namespace CadastroPessoa.API.Services
 			return dadosPessoas.Select(ConverterModeloParaDTO).ToList();
 		}
 
+		public async Task<PessoaRequisicao> BuscarPessoaFisica(string cpf)
+		{
+			PessoaFisica pessoaFisica = await _pessoaRepository.BuscarPessoaFisica(cpf);			
+			
+			return ConverterModeloParaDTO(pessoaFisica);
+		}
+
+		public async Task<PessoaRequisicao> BuscarPessoaJuridica(string cnpj)
+		{
+			PessoaJuridica pessoaJuridica = await _pessoaRepository.BuscarPessoaJuridica(cnpj);
+
+			return ConverterModeloParaDTO(pessoaJuridica);
+		}
 
 		private async Task<Pessoa> ConverterDTOParaModelo (PessoaRequisicao requisicao)
 		{
