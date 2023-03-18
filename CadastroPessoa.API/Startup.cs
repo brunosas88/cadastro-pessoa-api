@@ -1,4 +1,5 @@
 using CadastroPessoa.API.Data;
+using CadastroPessoa.API.Repository;
 using CadastroPessoa.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,7 @@ namespace CadastroPessoa.API
 			services.AddScoped<DataContext, DataContext>();
 			services.AddScoped<PessoaService, PessoaService>();
 			services.AddScoped<EnderecoService, EnderecoService>();
+			services.AddScoped<PessoaRepository,PessoaRepository>();
 			services.AddControllers();
 			services.AddSwaggerGen(options =>
 			{
