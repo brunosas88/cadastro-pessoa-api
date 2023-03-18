@@ -34,6 +34,7 @@ namespace CadastroPessoa.API
 			services.AddScoped<EnderecoService, EnderecoService>();
 			services.AddScoped<PessoaRepository,PessoaRepository>();
 			services.AddScoped<EnderecoRepository, EnderecoRepository>();
+			services.AddCors();
 			services.AddControllers();
 			services.AddSwaggerGen(options =>
 			{
@@ -53,6 +54,8 @@ namespace CadastroPessoa.API
 			}
 
 			app.UseRouting();
+
+			app.UseCors(opcoes => opcoes.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 			app.UseAuthorization();
 
