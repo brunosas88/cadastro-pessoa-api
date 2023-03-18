@@ -1,47 +1,37 @@
-﻿using CadastroPessoa.API.Data;
-using CadastroPessoa.API.Domain.DTO;
+﻿using CadastroPessoa.API.Domain.DTO;
 using CadastroPessoa.API.Domain.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using CadastroPessoa.API.Repository;
 using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CadastroPessoa.API.Services
 {
 	public class PessoaService
 	{
-		private readonly DataContext _context;
 		private readonly EnderecoService _enderecoService;
+		private readonly PessoaRepository _pessoaRepository;
 
-		public PessoaService(DataContext context, EnderecoService enderecoService) 
-		{ 
-			_context = context;
+		public PessoaService(EnderecoService enderecoService, PessoaRepository pessoaRepository) 
+		{ 	
 			_enderecoService = enderecoService;
+			_pessoaRepository = pessoaRepository;
 		}
 
 		public async Task<PessoaRequisicao> SalvarPessoaAsync(PessoaRequisicao requisicao)
 		{
-			Pessoa pessoaParaSalvar = await ConverterDTOParaModelo(requisicao);
+			Pessoa novaPessoa = await ConverterDTOParaModelo(requisicao);
 
-			if (pessoaParaSalvar is PessoaFisica pessoaFisica)			
-				_context.PessoasFisicas.Add(pessoaFisica);
-			
-			else if (pessoaParaSalvar is PessoaJuridica pessoaJuridica)
-				_context.PessoasJuridicas.Add(pessoaJuridica);
+			novaPessoa = await _pessoaRepository.CadastrarPessoa(novaPessoa);
 
-			await _context.SaveChangesAsync();
-
-			return requisicao;
+			return ConverterModeloParaDTO(novaPessoa);
 		}
 
 		public async Task<List<PessoaRequisicao>> ListarPessoasAsync()
 		{
 			List<PessoaRequisicao> listaPessoas = new List<PessoaRequisicao>();
-			var dadosPessoas = await _context.Pessoas.Include(campo => campo.Endereco).ToListAsync();
+			List<Pessoa> dadosPessoas = await _pessoaRepository.ListarPessoas();
 
 			return dadosPessoas.Select(ConverterModeloParaDTO).ToList();
 		}
@@ -52,17 +42,17 @@ namespace CadastroPessoa.API.Services
 
 			if (requisicao.RegistroSocial.Length == 14)
 			{
-				PessoaJuridica novaPessoa = new PessoaJuridica();
-				novaPessoa = (PessoaJuridica) await CriarPessoa(requisicao, novaPessoa);				
-				novaPessoa.Cnpj = requisicao.RegistroSocial;		
-				return novaPessoa;
+				PessoaJuridica novaPessoaJuridica = new PessoaJuridica();
+				novaPessoaJuridica = (PessoaJuridica) await CriarModeloPessoa(requisicao, novaPessoaJuridica);				
+				novaPessoaJuridica.Cnpj = requisicao.RegistroSocial;		
+				return novaPessoaJuridica;
 			}
 			else
 			{
-				PessoaFisica novaPessoa = new PessoaFisica();
-				novaPessoa = (PessoaFisica) await CriarPessoa(requisicao, novaPessoa);
-				novaPessoa.Cpf = requisicao.RegistroSocial;
-				return novaPessoa;
+				PessoaFisica novaPessoaFisica = new PessoaFisica();
+				novaPessoaFisica = (PessoaFisica) await CriarModeloPessoa(requisicao, novaPessoaFisica);
+				novaPessoaFisica.Cpf = requisicao.RegistroSocial;
+				return novaPessoaFisica;
 			}
 		}
 
@@ -82,9 +72,7 @@ namespace CadastroPessoa.API.Services
             return dtoPessoa;
 		}
 
-
-
-		private async Task<Pessoa> CriarPessoa(PessoaRequisicao requisicao, Pessoa novaPessoa)
+		private async Task<Pessoa> CriarModeloPessoa(PessoaRequisicao requisicao, Pessoa novaPessoa)
 		{
 			Endereco enderecoSalvo = await _enderecoService.CriarEnderecoAsync(requisicao.Endereco);
 			novaPessoa.Nome = requisicao.Nome;
