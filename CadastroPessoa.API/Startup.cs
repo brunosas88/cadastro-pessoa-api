@@ -33,6 +33,7 @@ namespace CadastroPessoa.API
 			services.AddScoped<PessoaService, PessoaService>();
 			services.AddScoped<EnderecoService, EnderecoService>();
 			services.AddScoped<PessoaRepository,PessoaRepository>();
+			services.AddScoped<EnderecoRepository, EnderecoRepository>();
 			services.AddControllers();
 			services.AddSwaggerGen(options =>
 			{
