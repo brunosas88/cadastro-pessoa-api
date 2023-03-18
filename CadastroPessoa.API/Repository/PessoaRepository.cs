@@ -10,7 +10,7 @@ namespace CadastroPessoa.API.Repository
 	public class PessoaRepository
 	{
 		private readonly DataContext _contexto;
-		public PessoaRepository(DataContext context) { _contexto = context; }
+		public PessoaRepository(DataContext contexto) { _contexto = contexto; }
 
 
 		public async Task<List<Pessoa>> ListarPessoas()
