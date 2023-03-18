@@ -19,7 +19,7 @@ namespace CadastroPessoa.API.Services
 			_pessoaRepository = pessoaRepository;
 		}
 
-		public async Task<PessoaRequisicao> SalvarPessoaAsync(PessoaRequisicao requisicao)
+		public async Task<PessoaRequisicao> CadastrarPessoa(PessoaRequisicao requisicao)
 		{
 			Pessoa novaPessoa = await ConverterDTOParaModelo(requisicao);
 
@@ -28,7 +28,7 @@ namespace CadastroPessoa.API.Services
 			return ConverterModeloParaDTO(novaPessoa);
 		}
 
-		public async Task<List<PessoaRequisicao>> ListarPessoasAsync()
+		public async Task<List<PessoaRequisicao>> ListarPessoas()
 		{
 			List<PessoaRequisicao> listaPessoas = new List<PessoaRequisicao>();
 			List<Pessoa> dadosPessoas = await _pessoaRepository.ListarPessoas();

@@ -20,16 +20,16 @@ namespace CadastroPessoa.API.Controllers
 
 		[HttpPost]
 		[Route("")]
-		public async Task<ActionResult<PessoaRequisicao>> Post([FromBody] PessoaRequisicao requisicao)
+		public async Task<ActionResult<PessoaRequisicao>> CadastrarPessoa([FromBody] PessoaRequisicao requisicao)
 		{
-			return await _pessoaService.SalvarPessoaAsync(requisicao);
+			return await _pessoaService.CadastrarPessoa(requisicao);
 		}
 
 		[HttpGet]
 		[Route("")]
 		public async Task<List<PessoaRequisicao>> ListarPessoas()
 		{
-			return await _pessoaService.ListarPessoasAsync();
+			return await _pessoaService.ListarPessoas();
 		}
 	}
 }
