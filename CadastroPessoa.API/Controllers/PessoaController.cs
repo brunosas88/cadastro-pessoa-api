@@ -34,7 +34,7 @@ namespace CadastroPessoa.API.Controllers
 		}
 
 		[HttpGet]
-		[Route("/buscar/pessoa_fisica/{cpf}")]
+		[Route("buscar/pessoa_fisica/{cpf}")]
 		public async Task<ActionResult<PessoaRequisicao>> BuscarPessoaFisica(string cpf)
 		{
 			try
@@ -50,7 +50,7 @@ namespace CadastroPessoa.API.Controllers
 		}
 
 		[HttpGet]
-		[Route("/buscar/pessoa_juridica/{cnpj}")]
+		[Route("buscar/pessoa_juridica/{cnpj}")]
 		public async Task<ActionResult<PessoaRequisicao>> BuscarPessoaJuridica(string cnpj)
 		{
 			try
