@@ -23,6 +23,11 @@ namespace CadastroPessoa.API.Services
 			return enderecoSalvo;
 		}
 
+		public async Task ExcluirEndereco(Endereco enderecoExcluido)
+		{
+			await _enderecoRepository.ExcluirEndereco(enderecoExcluido);
+		}
+
 		private Endereco ConverterDTOParaModelo(EnderecoDTO dto)
 		{
 			Endereco modeloEndereco = new Endereco();

@@ -2,6 +2,7 @@
 using CadastroPessoa.API.Domain.DTO;
 using CadastroPessoa.API.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -37,7 +38,11 @@ namespace CadastroPessoa.API.Repository
 			return await _contexto.PessoasFisicas.Include(campo => campo.Endereco).FirstOrDefaultAsync(pessoaFisica => pessoaFisica.Cpf == cpf);
 		}
 
-		 
+		public async Task ExcluirPessoa(Pessoa pessoaExcluida)
+		{
+			_contexto.Pessoas.Remove(pessoaExcluida);
+			await _contexto.SaveChangesAsync();
+		}
 
 	}
 

@@ -50,6 +50,24 @@ namespace CadastroPessoa.API.Services
 			return ConverterModeloParaDTO(pessoaJuridica);
 		}
 
+		public async Task ExcluirPessoa(string registroSocial)
+		{
+			Pessoa pessoaExcluida = await BuscarPessoa(registroSocial);
+				if (pessoaExcluida != null)
+				{
+					await _pessoaRepository.ExcluirPessoa(pessoaExcluida);
+					await _enderecoService.ExcluirEndereco(pessoaExcluida.Endereco);
+				}
+		}
+
+		private async Task<Pessoa> BuscarPessoa (string registroSocial)
+		{
+			if (registroSocial.Length == 14)
+				return await _pessoaRepository.BuscarPessoaJuridica(registroSocial);
+			else
+				return await _pessoaRepository.BuscarPessoaFisica(registroSocial);			
+		}
+
 		private async Task<Pessoa> ConverterDTOParaModelo (PessoaRequisicao requisicao)
 		{
 

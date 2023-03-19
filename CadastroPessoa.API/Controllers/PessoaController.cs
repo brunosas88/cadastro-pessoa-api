@@ -39,7 +39,7 @@ namespace CadastroPessoa.API.Controllers
 		{
 			try
 			{
-				var result = await _pessoaService.BuscarPessoaFisica(cpf);				
+				PessoaRequisicao result = await _pessoaService.BuscarPessoaFisica(cpf);				
 				return result;
 			}
 			catch (System.Exception)
@@ -55,7 +55,7 @@ namespace CadastroPessoa.API.Controllers
 		{
 			try
 			{
-				var result = await _pessoaService.BuscarPessoaJuridica(cnpj);
+				PessoaRequisicao result = await _pessoaService.BuscarPessoaJuridica(cnpj);
 				return result;
 			}
 			catch (System.Exception)
@@ -63,6 +63,13 @@ namespace CadastroPessoa.API.Controllers
 				return NotFound();
 			}
 
+		}
+
+		[HttpDelete]
+		[Route("excluir/{registroSocial}")]
+		public async Task ExcluirPessoa (string registroSocial)
+		{
+			await _pessoaService.ExcluirPessoa(registroSocial);
 		}
 
 
