@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CadastroPessoa.API.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(Contexto))]
     [Migration("20230317121309_adicionar-campo-Endereco")]
     partial class adicionarcampoEndereco
     {

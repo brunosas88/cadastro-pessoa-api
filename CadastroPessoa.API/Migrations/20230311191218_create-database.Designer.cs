@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CadastroPessoa.API.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(Contexto))]
     [Migration("20230311191218_create-database")]
     partial class createdatabase
     {

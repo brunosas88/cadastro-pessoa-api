@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CadastroPessoa.API.Data
 {
-	public class DataContext : DbContext
+	public class Contexto : DbContext
 	{
-		public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+		public Contexto(DbContextOptions<Contexto> options) : base(options) { }
 
 		public DbSet<Endereco> Enderecos { get; set; }
 		public DbSet<Pessoa> Pessoas { get; set; }		

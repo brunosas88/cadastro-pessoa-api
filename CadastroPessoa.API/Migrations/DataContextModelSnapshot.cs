@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CadastroPessoa.API.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(Contexto))]
     partial class DataContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

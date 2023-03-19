@@ -7,8 +7,8 @@ namespace CadastroPessoa.API.Repository
 {
 	public class EnderecoRepository
 	{
-		private readonly DataContext _contexto;
-		public EnderecoRepository(DataContext contexto) { _contexto = contexto; }
+		private readonly Contexto _contexto;
+		public EnderecoRepository(Contexto contexto) { _contexto = contexto; }
 
 		public async Task<Endereco> CadastrarEndereco (Endereco novoEndereco)
 		{

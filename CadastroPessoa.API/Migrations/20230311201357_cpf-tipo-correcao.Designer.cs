@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CadastroPessoa.API.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(Contexto))]
     [Migration("20230311201357_cpf-tipo-correcao")]
     partial class cpftipocorrecao
     {
