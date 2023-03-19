@@ -18,6 +18,8 @@ namespace CadastroPessoa.API.Domain.DTO
 		[Required(ErrorMessage = "Campo Obrigatório")]
 		public string RegistroSocial { get; set; }
 
+		public bool EstaAtivo { get; set; }
+
 		public EnderecoDTO Endereco { get; set; }
 	}
 }
