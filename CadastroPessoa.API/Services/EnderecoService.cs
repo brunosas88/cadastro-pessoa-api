@@ -23,9 +23,33 @@ namespace CadastroPessoa.API.Services
 			return enderecoSalvo;
 		}
 
+		public async Task EditarEndereco(Endereco dadosParaEditar)
+		{
+			await _enderecoRepository.EditarEndereco(dadosParaEditar);
+		}
+
 		public async Task ExcluirEndereco(Endereco enderecoExcluido)
 		{
 			await _enderecoRepository.ExcluirEndereco(enderecoExcluido);
+		}
+
+		public async Task EditarEndereco (EnderecoDTO novosDados, int id)
+		{
+			Endereco enderecoAtualizado = await AtualizarDadosEndereco(novosDados, id);
+			await _enderecoRepository.EditarEndereco(enderecoAtualizado);
+		}
+
+		private async Task<Endereco> AtualizarDadosEndereco (EnderecoDTO novosDados, int id)
+		{
+			Endereco endereco = await _enderecoRepository.BuscarEndereco(id);
+			endereco.Cep = novosDados.Cep;
+			endereco.Numero = novosDados.Numero;
+			endereco.Logradouro = novosDados.Logradouro;
+			endereco.Bairro = novosDados.Bairro;
+			endereco.Cidade = novosDados.Cidade;
+			endereco.Uf = novosDados.Uf;
+			endereco.Complemento = novosDados.Complemento;
+			return endereco;
 		}
 
 		private Endereco ConverterDTOParaModelo(EnderecoDTO dto)

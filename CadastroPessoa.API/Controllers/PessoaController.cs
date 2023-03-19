@@ -26,6 +26,13 @@ namespace CadastroPessoa.API.Controllers
 			return await _pessoaService.CadastrarPessoa(requisicao);
 		}
 
+		[HttpPut]
+		[Route("editar")]
+		public async Task EditarPessoa([FromBody] PessoaRequisicao requisicao)
+		{
+			await _pessoaService.EditarPessoa(requisicao);
+		}
+
 		[HttpGet]
 		[Route("")]
 		public async Task<ActionResult<List<PessoaResposta>>> ListarPessoas()
@@ -39,8 +46,8 @@ namespace CadastroPessoa.API.Controllers
 		{
 			try
 			{
-				PessoaResposta result = await _pessoaService.BuscarPessoaFisica(cpf);				
-				return result;
+				PessoaResposta resposta = await _pessoaService.BuscarPessoaFisica(cpf);				
+				return resposta;
 			}
 			catch (System.Exception)
 			{
@@ -55,8 +62,8 @@ namespace CadastroPessoa.API.Controllers
 		{
 			try
 			{
-				PessoaResposta result = await _pessoaService.BuscarPessoaJuridica(cnpj);
-				return result;
+				PessoaResposta resposta = await _pessoaService.BuscarPessoaJuridica(cnpj);
+				return resposta;
 			}
 			catch (System.Exception)
 			{
@@ -71,7 +78,5 @@ namespace CadastroPessoa.API.Controllers
 		{
 			await _pessoaService.ExcluirPessoa(registroSocial);
 		}
-
-
 	}
 }

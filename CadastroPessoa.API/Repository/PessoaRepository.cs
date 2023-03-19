@@ -2,6 +2,7 @@
 using CadastroPessoa.API.Domain.DTO;
 using CadastroPessoa.API.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -27,6 +28,12 @@ namespace CadastroPessoa.API.Repository
 
 			return pessoaCadastrada.Entity;
 		} 
+
+		public async Task EditarPessoa(Pessoa pessoa)
+		{
+			_contexto.Pessoas.Update(pessoa);
+			await _contexto.SaveChangesAsync();
+		}
 
 		public async Task<PessoaJuridica> BuscarPessoaJuridica(string cnpj)
 		{

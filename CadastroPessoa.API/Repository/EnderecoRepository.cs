@@ -17,9 +17,20 @@ namespace CadastroPessoa.API.Repository
 			return enderecoCadastrado.Entity;
 		}
 
+		public async Task<Endereco> BuscarEndereco(int id)
+		{
+			return await _contexto.Enderecos.FirstOrDefaultAsync(endereco => endereco.Id == id);
+		}
+
 		public async Task ExcluirEndereco(Endereco enderecoExcluido)
 		{
 			_contexto.Remove(enderecoExcluido);
+			await _contexto.SaveChangesAsync();
+		}
+
+		public async Task EditarEndereco(Endereco enderecoEditado)
+		{
+			_contexto.Update(enderecoEditado);
 			await _contexto.SaveChangesAsync();
 		}
 	}

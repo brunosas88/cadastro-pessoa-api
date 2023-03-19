@@ -19,13 +19,19 @@ namespace CadastroPessoa.API.Services
 			_pessoaRepository = pessoaRepository;
 		}
 
-		public async Task<PessoaResposta> CadastrarPessoa(PessoaRequisicao requisicao)
+		public async Task<PessoaResposta> CadastrarPessoa(PessoaRequisicao dadosParaCadastrar)
 		{
-			Pessoa novaPessoa = await ConverterDTOParaModelo(requisicao);
+			Pessoa novaPessoa = await ConverterDTOParaModelo(dadosParaCadastrar);
 
 			novaPessoa = await _pessoaRepository.CadastrarPessoa(novaPessoa);
 
 			return ConverterModeloParaDTO(novaPessoa);
+		}
+
+		public async Task EditarPessoa(PessoaRequisicao DadosParaEditar)
+		{
+			Pessoa pessoaAtualizada = await AtualizarDadosPessoa(DadosParaEditar);
+			await _pessoaRepository.EditarPessoa(pessoaAtualizada);
 		}
 
 		public async Task<List<PessoaResposta>> ListarPessoas()
@@ -119,6 +125,20 @@ namespace CadastroPessoa.API.Services
 			return novaPessoa;
 		}
 
+		private async Task<Pessoa> AtualizarDadosPessoa(PessoaRequisicao DadosParaAtualizar)
+		{
+			Pessoa pessoa = await BuscarPessoa(DadosParaAtualizar.RegistroSocial);
+
+			pessoa.Nome = DadosParaAtualizar.Nome;
+			pessoa.Email = DadosParaAtualizar.Email;
+			pessoa.Telefone = DadosParaAtualizar.Telefone;
+			pessoa.EstaAtivo = DadosParaAtualizar.EstaAtivo;
+			pessoa.AtualizadoEm = DateTime.Now;
+
+			await _enderecoService.EditarEndereco(DadosParaAtualizar.Endereco, pessoa.EnderecoId);
+
+			return pessoa;
+		}
 
 	}
 }
