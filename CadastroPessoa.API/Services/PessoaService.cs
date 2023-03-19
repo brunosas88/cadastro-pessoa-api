@@ -19,7 +19,7 @@ namespace CadastroPessoa.API.Services
 			_pessoaRepository = pessoaRepository;
 		}
 
-		public async Task<PessoaRequisicao> CadastrarPessoa(PessoaRequisicao requisicao)
+		public async Task<PessoaResposta> CadastrarPessoa(PessoaRequisicao requisicao)
 		{
 			Pessoa novaPessoa = await ConverterDTOParaModelo(requisicao);
 
@@ -28,7 +28,7 @@ namespace CadastroPessoa.API.Services
 			return ConverterModeloParaDTO(novaPessoa);
 		}
 
-		public async Task<List<PessoaRequisicao>> ListarPessoas()
+		public async Task<List<PessoaResposta>> ListarPessoas()
 		{
 			List<PessoaRequisicao> listaPessoas = new List<PessoaRequisicao>();
 			List<Pessoa> dadosPessoas = await _pessoaRepository.ListarPessoas();
@@ -36,14 +36,14 @@ namespace CadastroPessoa.API.Services
 			return dadosPessoas.Select(ConverterModeloParaDTO).ToList();
 		}
 
-		public async Task<PessoaRequisicao> BuscarPessoaFisica(string cpf)
+		public async Task<PessoaResposta> BuscarPessoaFisica(string cpf)
 		{
 			PessoaFisica pessoaFisica = await _pessoaRepository.BuscarPessoaFisica(cpf);			
 			
 			return ConverterModeloParaDTO(pessoaFisica);
 		}
 
-		public async Task<PessoaRequisicao> BuscarPessoaJuridica(string cnpj)
+		public async Task<PessoaResposta> BuscarPessoaJuridica(string cnpj)
 		{
 			PessoaJuridica pessoaJuridica = await _pessoaRepository.BuscarPessoaJuridica(cnpj);
 
@@ -87,14 +87,16 @@ namespace CadastroPessoa.API.Services
 			}
 		}
 
-		private PessoaRequisicao ConverterModeloParaDTO(Pessoa modelo)
+		private PessoaResposta ConverterModeloParaDTO(Pessoa modelo)
 		{
-			PessoaRequisicao dtoPessoa = new PessoaRequisicao();
+			PessoaResposta dtoPessoa = new PessoaResposta();
 			dtoPessoa.Nome = modelo.Nome;
 			dtoPessoa.Email = modelo.Email;
 			dtoPessoa.Telefone = modelo.Telefone;
 			dtoPessoa.Endereco = _enderecoService.ConverterModeloParaDTO(modelo.Endereco);
-
+			dtoPessoa.EstaAtivo = modelo.EstaAtivo;
+			dtoPessoa.CriadoEm = modelo.CriadoEm.ToString("g");
+			dtoPessoa.AtualizadoEm = modelo.AtualizadoEm.ToString("g");
 			if (modelo is PessoaFisica modeloPessoaFisica)			
 				dtoPessoa.RegistroSocial = modeloPessoaFisica.Cpf;			
 			else if (modelo is PessoaJuridica modeloPessoaJuridica)

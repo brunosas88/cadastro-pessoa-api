@@ -21,25 +21,25 @@ namespace CadastroPessoa.API.Controllers
 
 		[HttpPost]
 		[Route("")]
-		public async Task<ActionResult<PessoaRequisicao>> CadastrarPessoa([FromBody] PessoaRequisicao requisicao)
+		public async Task<ActionResult<PessoaResposta>> CadastrarPessoa([FromBody] PessoaRequisicao requisicao)
 		{
 			return await _pessoaService.CadastrarPessoa(requisicao);
 		}
 
 		[HttpGet]
 		[Route("")]
-		public async Task<ActionResult<List<PessoaRequisicao>>> ListarPessoas()
+		public async Task<ActionResult<List<PessoaResposta>>> ListarPessoas()
 		{
 			return await _pessoaService.ListarPessoas();
 		}
 
 		[HttpGet]
 		[Route("buscar/pessoa_fisica/{cpf}")]
-		public async Task<ActionResult<PessoaRequisicao>> BuscarPessoaFisica(string cpf)
+		public async Task<ActionResult<PessoaResposta>> BuscarPessoaFisica(string cpf)
 		{
 			try
 			{
-				PessoaRequisicao result = await _pessoaService.BuscarPessoaFisica(cpf);				
+				PessoaResposta result = await _pessoaService.BuscarPessoaFisica(cpf);				
 				return result;
 			}
 			catch (System.Exception)
@@ -51,11 +51,11 @@ namespace CadastroPessoa.API.Controllers
 
 		[HttpGet]
 		[Route("buscar/pessoa_juridica/{cnpj}")]
-		public async Task<ActionResult<PessoaRequisicao>> BuscarPessoaJuridica(string cnpj)
+		public async Task<ActionResult<PessoaResposta>> BuscarPessoaJuridica(string cnpj)
 		{
 			try
 			{
-				PessoaRequisicao result = await _pessoaService.BuscarPessoaJuridica(cnpj);
+				PessoaResposta result = await _pessoaService.BuscarPessoaJuridica(cnpj);
 				return result;
 			}
 			catch (System.Exception)
